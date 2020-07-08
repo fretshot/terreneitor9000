@@ -1,0 +1,2 @@
+rootProject.name='Terreneitor'
+include ':app'
