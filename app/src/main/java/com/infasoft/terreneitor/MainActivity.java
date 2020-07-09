@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    private Button bnt_back, btn_go;
+    private Button bnt_back, btn_go, btn_stop, btn_left, btn_right;
     private BluetoothAdapter hc05 = null;
     private BluetoothSocket socket = null;
     private boolean isConnected = false;
@@ -34,20 +34,44 @@ public class MainActivity extends AppCompatActivity {
 
         btn_go = findViewById(R.id.button_go);
         bnt_back = findViewById(R.id.button_back);
+        btn_stop = findViewById(R.id.button_stop);
+        btn_left = findViewById(R.id.button_left);
+        btn_right = findViewById(R.id.button_right);
 
         new ConnectBT().execute();
+
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("0");
+            }
+        });
 
         btn_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("go");
+                sendCommand("1");
             }
         });
 
         bnt_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("back");
+                sendCommand("2");
+            }
+        });
+         
+        btn_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("3");
+            }
+        });
+
+        btn_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("4");
             }
         });
     }
