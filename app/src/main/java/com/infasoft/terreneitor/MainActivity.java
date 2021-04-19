@@ -2,30 +2,29 @@ package com.infasoft.terreneitor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-    private Button bnt_back, btn_go;
-    private BluetoothAdapter hc05 = null;
-    private BluetoothSocket socket = null;
+    private Button bnt_back, btn_go, btn_left, btn_right, btn_stop, btn_led1;
+    private BluetoothAdapter hc05;
+    private BluetoothSocket socket;
     private boolean isConnected = false;
     private ProgressDialog progressDialog;
     private String hc05_address = "98:D3:32:30:E2:6D";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +33,66 @@ public class MainActivity extends AppCompatActivity {
 
         btn_go = findViewById(R.id.button_go);
         bnt_back = findViewById(R.id.button_back);
+        btn_left = findViewById(R.id.button_left);
+        btn_right = findViewById(R.id.button_right);
+        btn_stop = findViewById(R.id.button_stop);
+        btn_led1 = findViewById(R.id.button_led1);
 
         new ConnectBT().execute();
+
 
         btn_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("go");
+                sendCommand("1");
             }
         });
 
         bnt_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("back");
+                sendCommand("2");
             }
         });
+        btn_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("4");
+            }
+        });
+        btn_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("3");
+            }
+        });
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("0");
+            }
+        });
+
+        btn_led1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("9");
+            }
+        });
+
+        /*
+        btn_go.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    msg("Presionando...");
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    msg("Soltando...");
+                }
+                return false;
+            }
+        });
+         */
     }
 
 

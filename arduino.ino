@@ -1,19 +1,91 @@
-char Incoming_value = 0;                //Variable for storing Incoming_value
-void setup() {
-  Serial.begin(9600);         //Sets the data rate in bits per second (baud) for serial data transmission
-  pinMode(13, OUTPUT);        //Sets digital pin 13 as output pin
+char incomingData = 0;
+
+int in1 = 7;
+int in2 = 6;
+int in3 = 5; 
+int in4 = 4;
+
+int led = 13;
+int frontLed = 3;
+
+bool isFrontLedOn = false;
+
+void setup(){
+  Serial.begin(9600);
+  
+  pinMode (in1, OUTPUT);
+  pinMode (in2, OUTPUT);
+  pinMode (in3, OUTPUT);
+  pinMode (in4, OUTPUT);
+
+  pinMode(led, OUTPUT);
+  pinMode(frontLed, OUTPUT);
 }
 
-
 void loop(){
+
   if(Serial.available() > 0){
-    Incoming_value = Serial.read();      //Read the incoming data and store it into variable Incoming_value
-    Serial.print(Incoming_value);        //Print Value of Incoming_value in Serial monitor
-    Serial.print("\n");        //New line 
-    if(Incoming_value == '1')            //Checks whether value of Incoming_value is equal to 1 
-      digitalWrite(13, HIGH);  //If value is 1 then LED turns ON
-    else if(Incoming_value == '0')       //Checks whether value of Incoming_value is equal to 0
-      digitalWrite(13, LOW);   //If value is 0 then LED turns OFF
-  }                            
+    
+    incomingData = Serial.read();
+    Serial.print(incomingData);
+    
+    if(incomingData == '4'){
+      Serial.print("@@@@ Girando Izquierda...");
+      digitalWrite(led, HIGH); 
+      digitalWrite (in1, HIGH);
+      digitalWrite (in2, LOW);
+      digitalWrite (in3, LOW);
+      digitalWrite (in4, HIGH); 
+    }
+
+    if(incomingData == '3'){
+      Serial.print("@@@@ Girando Derecha...");
+      digitalWrite(led, HIGH); 
+      digitalWrite (in1, LOW);
+      digitalWrite (in2, HIGH);
+      digitalWrite (in3, HIGH);
+      digitalWrite (in4, LOW); 
+    }
+
+    if(incomingData == '2'){
+      Serial.print("@@@@ Retrocediendo...");
+      digitalWrite(led, HIGH); 
+      digitalWrite (in1, LOW);
+      digitalWrite (in2, HIGH);
+      digitalWrite (in3, LOW);
+      digitalWrite (in4, HIGH); 
+    }
+
+    if(incomingData == '1'){
+      Serial.print("@@@@ Avanzando...");
+      digitalWrite(led, HIGH); 
+      digitalWrite (in1, HIGH);
+      digitalWrite (in2, LOW);
+      digitalWrite (in3, HIGH);
+      digitalWrite (in4, LOW); 
+    }
+
+    if(incomingData == '0'){
+      Serial.print("@@@@ Alto total.");
+      digitalWrite(led, LOW);
+      digitalWrite (in1, LOW); 
+      digitalWrite (in2, LOW); 
+      digitalWrite (in3, LOW); 
+      digitalWrite (in4, LOW); 
+    }
+
+    if(incomingData == '9'){
+      if(isFrontLedOn == true){
+        Serial.print("@@@@ Led Off");
+        digitalWrite(frontLed, LOW);
+        isFrontLedOn = false;
+      }else{
+        Serial.print("@@@@ Led On");
+        digitalWrite(frontLed, HIGH);
+        isFrontLedOn = true;
+      }
+    }
  
-}                 
+  }
+  
+}
